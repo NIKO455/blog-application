@@ -9,19 +9,19 @@ function checkForAuthenticationCookie(cookieName) {
 
         try {
             req.user = validateToken(tokenCookieValue);
-        } catch (e) {
-            // If there's an error in token validation, proceed without setting req.user
-        }
+        } catch (e) { }
         return next();
     };
 }
+
+
 
 function redirectIfAuthenticated(req, res, next) {
     const tokenCookieValue = req.cookies['token'];
     if (tokenCookieValue) {
         try {
             req.user = validateToken(tokenCookieValue);
-            return res.redirect('/');  // Redirect to the homepage or dashboard
+            return res.redirect('/');
         } catch (e) {
             return next();
         }
@@ -30,4 +30,19 @@ function redirectIfAuthenticated(req, res, next) {
     }
 }
 
-module.exports = { checkForAuthenticationCookie, redirectIfAuthenticated };
+function authenticatedUserOnly(req, res, next) {
+    const tokenCookieValue = req.cookies['token']
+    if (tokenCookieValue) {
+        try {
+            req.user = validateToken(tokenCookieValue);
+            next()
+        } catch (e) {
+            console.log('not authenticated');
+        }
+    }else{
+        return res.redirect('/')
+    }
+}
+
+
+module.exports = { checkForAuthenticationCookie, redirectIfAuthenticated, authenticatedUserOnly };
