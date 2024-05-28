@@ -6,13 +6,18 @@ const HOST = process.env.HOST;
 const MONGODB_URL = process.env.MONGODB_URI
 
 const path = require('path')
+const indexRouter = require('./routes/index')
 const userRouter = require('./routes/user')
 const blogRouter = require('./routes/blog')
-const { connectDB } = require('./connection')
+const {connectDB} = require('./connection')
 const debug = require('debug')('dev:server')
 const cookieParser = require('cookie-parser')
-const { checkForAuthenticationCookie, redirectIfAuthenticated, authenticatedUserOnly } = require("./middlewares/authentication");
-const { userLogoutHandler } = require("./controllers/user");
+const {
+    checkForAuthenticationCookie,
+    redirectIfAuthenticated,
+    authenticatedUserOnly
+} = require("./middlewares/authentication");
+const {userLogoutHandler} = require("./controllers/user");
 
 
 // connecting to the database
@@ -21,17 +26,14 @@ connectDB(MONGODB_URL)
 // setup middlewares
 app.use(express.json());
 app.use(cookieParser())
-app.use(express.urlencoded({ extended: true }))
+app.use(express.urlencoded({extended: true}))
 app.use(checkForAuthenticationCookie('token'))
 
 // setup view engine
 app.set('view engine', 'ejs')
 app.use(express.static(path.join(__dirname, 'public')))
 
-app.get('/', (req, res) => {
-    res.render('pages/index', { user: req.user })
-})
-
+app.use('/', indexRouter)
 app.use('/user', redirectIfAuthenticated, userRouter)
 app.use('/blog', authenticatedUserOnly, blogRouter);
 app.get('/logout', userLogoutHandler);

@@ -10,7 +10,7 @@ async function storeBlogHandler(req, res) {
         return res.render('pages/blog/create', { error: "Some fields are missing", user: req.user })
     }
 
-    let createPost = await Blog.create({
+    await Blog.create({
         coverImageURL: req.file.filename,
         title,
         body: description
