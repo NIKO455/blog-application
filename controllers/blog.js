@@ -23,8 +23,8 @@ async function storeBlogHandler(req, res) {
 }
 
 async function viewBlogHandler(req, res) {
-  let data = await Blog.findOne({ _id: req.params.ID });
-  return res.send(data);
+  let blog = await Blog.findOne({ _id: req.params.ID });
+  return res.render("pages/blog/view", {blog});
 }
 
 module.exports = { createBlogHandler, storeBlogHandler, viewBlogHandler };

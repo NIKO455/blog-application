@@ -1,0 +1,14 @@
+<%- include('../../layout/header', {title:'view-blog'}) %>
+
+<div class="container mt-4">
+  <h3 class="mt-3 mb-3"><%= blog.title%></h3>
+
+  <% if(blog.coverImageURL){%>
+
+  <img src="/storage/blog-posts/<%= blog.coverImageURL %>" alt="blog-image" />
+  <%} %>
+
+  <p><%= blog.body %></p>
+</div>
+
+<%- include('../../layout/footer') %>
