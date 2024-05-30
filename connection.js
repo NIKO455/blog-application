@@ -1,6 +1,6 @@
 const {connect} = require('mongoose')
 const debug = require('debug')('dev:mongoose')
-
+ 
 async function connectDB(url) {
     connect(url).then(() => {
         debug("Connected to Database");
