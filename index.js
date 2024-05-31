@@ -34,7 +34,7 @@ app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
-app.use("/blog/:ID", viewBlogHandler);
+app.get("/view/blog/:ID", viewBlogHandler);
 app.use("/user", redirectIfAuthenticated, userRouter);
 app.use("/blog", authenticatedUserOnly, blogRouter);
 app.get("/logout", userLogoutHandler);
